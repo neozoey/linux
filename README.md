@@ -7,6 +7,7 @@ sudo apt install xfce4-{battery-plugin,clipman-plugin,cpufreq-plugin,cpugraph-pl
 ## Slick Greeter ##
 
 sudo mkdir /etc/lightdm/lightdm.conf.d
+
 sudo nano /etc/lightdm/lightdm.conf.d/70-xfce.conf
 
 [SeatDefaults]
@@ -15,4 +16,5 @@ user-session=xfce
 ## Theming ##
 
 sudo apt install elementary-xfce-icon-theme greybird-gtk-theme dmz-cursor-theme
+
 sudo update-alternatives --config x-cursor-theme
