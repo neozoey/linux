@@ -14,5 +14,5 @@ user-session=xfce
 
 ## Theming ##
 
-sudo apt install elementary-xfce-icon-theme greybird-gtk-theme dmz-cursor-theme
+sudo apt install gnome-themes-extra elementary-xfce-icon-theme greybird-gtk-theme dmz-cursor-theme
 sudo update-alternatives --config x-cursor-theme
