@@ -1,6 +1,6 @@
 sudo apt install cinnamon-core slick-greeter firefox-esr 
 
-sudo apt instasll synaptic dmz-cursor-theme gedit thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
+sudo apt install synaptic dmz-cursor-theme gedit thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
 
 
 ## Slick Greeter ##
