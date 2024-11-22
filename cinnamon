@@ -1,0 +1,57 @@
+sudo apt install cinnamon-core slick-greeter firefox-esr 
+
+sudo apt instasll synaptic dmz-cursor-theme gedit thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
+
+
+## Slick Greeter ##
+
+sudo mkdir /etc/lightdm/lightdm.conf.d
+sudo nano /etc/lightdm/lightdm.conf.d/70-cinnamon.conf
+
+[SeatDefaults]
+user-session=cinnamon
+
+## Hintergrundbilder #
+
+sudo mkdir /usr/share/backgrounds/debian
+
+
+## Mint Themes Git ##
+
+sudo apt install git make pysassc
+
+git clone https://github.com/linuxmint/mint-themes.git
+cd mint-themes
+make
+sudo cp -r usr/share/themes/* /usr/share/themes
+
+git clone https://github.com/linuxmint/mint-y-icons.git
+sudo cp -r mint-y-icons/usr/share/icons/* /usr/share/icons
+
+
+## Mint Themes APT ##
+
+sudo nano /etc/apt/sources.list.d/linuxmint.list
+
+deb https://mirror.netcologne.de/linuxmint/packages faye main upstream import backport
+
+
+sudo apt-key adv --recv-keys --keyserver keyserver.ubuntu.com A6616109451BBBF2
+sudo apt-key list
+sudo apt-key export 451BBBF2 | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/linuxmint.gpg
+ 
+sudo nano /etc/apt/preferences.d/linuxmint
+ 
+Package: *
+Pin: release o=debian
+Pin-Priority: 500
+ 
+Package: *
+Pin: release o=linuxmint
+Pin-Priority: 300
+ 
+Package: mint-themes mint-y-icons mint-x-icons
+Pin: release o=linuxmint
+Pin-Priority: 500
+ 
+sudo apt install mint-themes mint-y-icons mint-x-icons
