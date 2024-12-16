@@ -1,6 +1,8 @@
-sudo apt install cinnamon-core slick-greeter firefox-esr 
+## Pakete ##
 
-sudo apt install synaptic dmz-cursor-theme gedit eog evince thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
+sudo apt install cinnamon-core slick-greeter firefox-esr tilix synaptic dmz-cursor-theme gedit eog evince thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
+
+sudo update-alternatives --config x-cursor-theme
 
 
 ## Slick Greeter ##
@@ -16,14 +18,14 @@ user-session=cinnamon
 sudo mkdir /usr/share/backgrounds/debian
 
 
-## Mint Themes Git ##
+## Mint Themes Git für Debian 12 ##
 
 sudo apt install git make pysassc
 
-git clone https://github.com/linuxmint/mint-themes.git
-cd mint-themes
+wget https://github.com/linuxmint/mint-themes/archive/refs/tags/master.mint21.tar.gz && tar -xf master.mint21.tar.gz
+cd mint-themes-master.mint21/
 make
-sudo cp -r usr/share/themes/* /usr/share/themes
+sudo cp -r usr/share/themes/Mint-{Y,Y-Dark,Y-Dark-Blue,Y-Blue} /usr/share/themes
 
 git clone https://github.com/linuxmint/mint-y-icons.git
 sudo cp -r mint-y-icons/usr/share/icons/* /usr/share/icons
