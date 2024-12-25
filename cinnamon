@@ -1,31 +1,81 @@
-## Pakete ##
+--------------------------------- Debian Cinnamon minimal netinstall -------------------------------------------------------
 
-sudo apt install cinnamon-core slick-greeter firefox-esr tilix synaptic dmz-cursor-theme gedit eog evince thunderbird thunderbird-l10n-de cups system-config-printer simple-scan
+-> Nach der Installation kein Neustart sondern ESC
+-> Eine Shell ausführen
 
-sudo update-alternatives --config x-cursor-theme
+- chroot /target
+- nano /etc/network/interfaces (wifi eintrag entfernen)
+- apt update
+- apt install cinnamon-core slick-greeter 
+- exit
+- reboot
+
+--------------------------------------------------- Pakete -----------------------------------------------------------------
+
+sudo update-grub
+
+sudo apt install dbus-x11 curl synaptic cups system-config-printer tilix gedit eog eog-plugin-disable-dark-theme celluloid simple-scan firefox-esr thunderbird thunderbird-l10n-de keepassxc evince libreoffice libreoffice-gtk3 libreoffice-l10n-de mintstick ufw
+
+sudo apt install dmz-cursor-theme && sudo update-alternatives --config x-cursor-theme
+
+------------------------------------------------------ Ubuntu Font ---------------------------------------------------------
 
 
-## Slick Greeter ##
+wget https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip -P /home/tim/Downloads && cd /home/tim/Downloads &&
+unzip /home/tim/Downloads/0cef8205-ubuntu-font-family-0.83.zip && sudo mkdir -p /usr/share/fonts/truetype/ubuntu &&
+sudo cp /home/tim/Downloads/ubuntu-font-family-0.83/Ubuntu* /usr/share/fonts/truetype/ubuntu && 
+sudo chmod 644 /usr/share/fonts/truetype/ubuntu/Ubuntu*
 
-sudo mkdir /etc/lightdm/lightdm.conf.d
+
+--------------------------------------------------- Slick Greeter ----------------------------------------------------------
+
+sudo mkdir /etc/lightdm/lightdm.conf.d &&
 sudo nano /etc/lightdm/lightdm.conf.d/70-cinnamon.conf
 
 [SeatDefaults]
 user-session=cinnamon
 
-## Hintergrundbilder #
+----------------------------------------------- Mint Themes Git für Debian 12 -----------------------------------------------
 
-sudo mkdir /usr/share/backgrounds/debian
-
-
-## Mint Themes Git für Debian 12 ##
-
-sudo apt install git make pysassc
-
-wget https://github.com/linuxmint/mint-themes/archive/refs/tags/master.mint21.tar.gz && tar -xf master.mint21.tar.gz
-cd mint-themes-master.mint21/
-make
-sudo cp -r usr/share/themes/Mint-{Y,Y-Dark,Y-Dark-Blue,Y-Blue} /usr/share/themes
-
-git clone https://github.com/linuxmint/mint-y-icons.git
+sudo apt install -y git make pysassc &&
+cd /home/tim/Downloads &&
+wget https://github.com/linuxmint/mint-themes/archive/refs/tags/master.mint21.tar.gz && tar -xf master.mint21.tar.gz &&
+cd mint-themes-master.mint21/ &&
+make &&
+sudo cp -r usr/share/themes/Mint-{Y,Y-Dark,Y-Dark-Blue,Y-Blue} /usr/share/themes &&
+cd /home/tim/Downloads &&
+git clone https://github.com/linuxmint/mint-y-icons.git &&
 sudo cp -r mint-y-icons/usr/share/icons/* /usr/share/icons
+
+----------------------------------- Network Manager Benachrichtigungen deaktivieren -----------------------------------------
+
+sudo apt install -y dbus-x11 &&
+gsettings set org.gnome.nm-applet disable-connected-notifications true &&
+gsettings set org.gnome.nm-applet disable-disconnected-notifications true
+
+--------------------------------------------- QT5 Theme ---------------------------------------------------------------------
+
+sudo apt install -y qt5ct qt5-gtk2-platformtheme &&
+sudo touch /etc/environment.d/qt5ct.conf && echo "export QT_QPA_PLATFORMTHEME=qt5ct" | sudo tee /etc/environment.d/qt5ct.conf > /dev/null
+
+--------------------------------------------- Programme ----------------------------------------------------------------------
+
+mkdir -p /home/tim/.config/tilix/schemes && wget https://raw.githubusercontent.com/neozoey/linux/refs/heads/main/tim.json -P /home/tim/.config/tilix/schemes
+
+https://wiki.debian.org/spotify
+
+https://apt.syncthing.net/
+sudo systemctl enable syncthing@tim.service
+sudo systemctl start syncthing@tim.service
+
+sudo ufw allow from 172.21.1.0/24 to any port 22000 comment 'syncthing'
+sudo ufw allow in from 172.21.1.0/24 to any port 21027 proto udp comment 'syncthing'
+
+------------------------------------------ Logitech USB Maus Lag Wake Up Fix -------------------------------------------------
+
+lsusb
+Bus 001 Device 007: ID 046d:c542 Logitech, Inc. M185 compact wireless mouse
+
+sudo nano /etc/udev/rules.d/50-logi-usb_power_save.rules
+
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c542", ATTR{power/autosuspend}="-1"
